@@ -2,7 +2,6 @@
     package="com.example.tecent_push_testing">
    <application
         android:label="tecent_push_testing"
-        android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
@@ -30,5 +29,8 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+       <meta-data
+           android:name="XG_SERVER_SUFFIX"
+           android:value="tpns.sgp.tencent.com"/>
     </application>
 </manifest>

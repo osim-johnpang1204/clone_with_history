@@ -149,6 +149,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.4.3"
+  tpns_flutter_plugin:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: "V1.1.5"
+      resolved-ref: b07a12d9fccd22f82bf5fc9808176141438fcd18
+      url: "https://github.com/TencentCloud/TPNS-Flutter-Plugin"
+    source: git
+    version: "1.1.5"
   typed_data:
     dependency: transitive
     description:
@@ -165,3 +174,4 @@ packages:
     version: "2.1.1"
 sdks:
   dart: ">=2.15.1 <3.0.0"
+  flutter: ">=1.20.0"

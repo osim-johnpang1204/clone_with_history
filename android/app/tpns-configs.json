@@ -1,0 +1,14 @@
+{
+    "tpns": {
+        "access_id": "1520011026",
+        "access_key": "APMPAT8PELL9"
+    },
+    "com.example.tecent_push_testing": {
+        "channel": {
+            "enable": true
+        }
+    },
+    "debug": false,
+    "version": "1.3.1.1-release",
+    "upgrade": true
+}

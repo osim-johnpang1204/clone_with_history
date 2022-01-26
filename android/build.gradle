@@ -8,6 +8,7 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:4.1.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "com.tencent.android.tpns:tpnsplugin:1.8.0"
     }
 }
 
@@ -15,6 +16,7 @@ allprojects {
     repositories {
         google()
         mavenCentral()
+//        maven {url 'http://developer.huawei.com/repo/'}   华为仓，如果不集成华为可以不加
     }
 }
 
