@@ -1,8 +1,18 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:tpns_flutter_plugin/tpns_flutter_plugin.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  FirebaseMessaging.onBackgroundMessage(_fcmMessageHandler);
+
   runApp(const MyApp());
+}
+
+Future<void> _fcmMessageHandler(RemoteMessage message) async {
+  print('[John] FCM background:  ${message.notification!.body}');
 }
 
 class MyApp extends StatelessWidget {
@@ -32,14 +42,43 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
   final XgFlutterPlugin tpush = XgFlutterPlugin();
+  late FirebaseMessaging messaging;
+
+  String? token;
 
   @override
   void initState() {
     super.initState();
-    initPlatformState();
+    initTecentPlatformState();
+    initFirebase();
   }
 
-  Future<void> initPlatformState() async {
+  Future<void> initFirebase() async {
+    messaging = FirebaseMessaging.instance;
+
+    messaging.getToken().then((value) {
+      setState(() {
+        token = value;
+        textEditingController.text = token!;
+      });
+
+      print('[John] FCM token $value');
+    });
+
+    FirebaseMessaging.onMessage.listen((RemoteMessage event) {
+      print("[John] FCM message recieved");
+      print(event.notification!.body);
+    });
+    FirebaseMessaging.onMessageOpenedApp.listen((message) {
+      print('[John] FCM Message clicked!');
+    });
+
+    FirebaseMessaging.onMessageOpenedApp.listen((event) {
+      print('[John] FCM Opened App!');
+    });
+  }
+
+  Future<void> initTecentPlatformState() async {
     /// 开启DEBUG
     tpush.setEnableDebug(true);
 
@@ -87,6 +126,8 @@ class _MyHomePageState extends State<MyHomePage> {
     tpush.startXg("1520011026", "APMPAT8PELL9");
   }
 
+  TextEditingController textEditingController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -97,13 +138,15 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                '$token',
+              ),
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
+            TextField(
+              controller: textEditingController,
+            )
           ],
         ),
       ),
