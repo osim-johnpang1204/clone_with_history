@@ -41,7 +41,6 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
-  final XgFlutterPlugin tpush = XgFlutterPlugin();
   late FirebaseMessaging messaging;
 
   String? token;
@@ -78,55 +77,19 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  final XgFlutterPlugin tpush = XgFlutterPlugin();
+
   Future<void> initTecentPlatformState() async {
     /// 开启DEBUG
     tpush.setEnableDebug(true);
-
-    /// 添加回调事件
-    tpush.addEventHandler(
-      onRegisteredDeviceToken: (String msg) async {
-        print("flutter onRegisteredDeviceToken: $msg");
-      },
-      onRegisteredDone: (String msg) async {
-        print("flutter onRegisteredDone: $msg");
-      },
-      unRegistered: (String msg) async {
-        print("flutter unRegistered: $msg");
-      },
-      onReceiveNotificationResponse: (Map<String, dynamic> msg) async {
-        print("flutter onReceiveNotificationResponse $msg");
-      },
-      onReceiveMessage: (Map<String, dynamic> msg) async {
-        print("flutter onReceiveMessage $msg");
-      },
-      xgPushDidSetBadge: (String msg) async {
-        print("flutter xgPushDidSetBadge: $msg");
-
-        /// 在此可设置应用角标
-        /// tpush.setAppBadge(0);
-      },
-      xgPushDidBindWithIdentifier: (String msg) async {
-        print("flutter xgPushDidBindWithIdentifier: $msg");
-      },
-      xgPushDidUnbindWithIdentifier: (String msg) async {
-        print("flutter xgPushDidUnbindWithIdentifier: $msg");
-      },
-      xgPushDidUpdatedBindedIdentifier: (String msg) async {
-        print("flutter xgPushDidUpdatedBindedIdentifier: $msg");
-      },
-      xgPushDidClearAllIdentifiers: (String msg) async {
-        print("flutter xgPushDidClearAllIdentifiers: $msg");
-      },
-      xgPushClickAction: (Map<String, dynamic> msg) async {
-        print("flutter xgPushClickAction $msg");
-      },
-    );
-
     tpush.configureClusterDomainName("tpns.sgp.tencent.com");
     tpush.startXg("1520011026", "APMPAT8PELL9");
+    XgFlutterPlugin.xgApi.enableOtherPush();
+    XgFlutterPlugin.xgApi.regPush();
   }
 
   TextEditingController textEditingController = TextEditingController();
+  TextEditingController textEditingController2 = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -134,6 +97,7 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
+
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -141,17 +105,29 @@ class _MyHomePageState extends State<MyHomePage> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                '$token',
+                'FCM: $token',
+              ),
+            ),
+            // TextField(
+            //   controller: textEditingController,
+            // ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                'Tecent FCM:',
               ),
             ),
             TextField(
-              controller: textEditingController,
+              controller: textEditingController2,
             )
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: null,
+        onPressed: () async {
+          XgFlutterPlugin.xgApi.enableOtherPush();
+          XgFlutterPlugin.xgApi.regPush();
+        },
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
