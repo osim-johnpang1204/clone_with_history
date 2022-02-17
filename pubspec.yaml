@@ -35,10 +35,11 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
-#  tpns_flutter_plugin:
-#    git:
-#      url: https://github.com/TencentCloud/TPNS-Flutter-Plugin
-#      ref: V1.1.5
+  tpns_flutter_plugin:
+    git:
+      url: https://github.com/TencentCloud/TPNS-Flutter-Plugin
+      ref: V1.1.5
+  notification_permissions: ^0.6.1
 
 dev_dependencies:
   flutter_test:
@@ -50,9 +51,9 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^1.0.0
-  firebase_core: ^1.11.0
-  firebase_messaging: ^11.2.5
-  cloud_firestore: ^3.1.6
+#  firebase_core: ^1.11.0
+#  firebase_messaging: ^11.2.5
+#  cloud_firestore: ^3.1.6
   flutter_local_notifications: ^9.2.0
   http: ^0.13.4
 
