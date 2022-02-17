@@ -1,19 +1,18 @@
-// import 'package:firebase_core/firebase_core.dart';
-// import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:tpns_flutter_plugin/tpns_flutter_plugin.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // await Firebase.initializeApp();
-  // FirebaseMessaging.onBackgroundMessage(_fcmMessageHandler);
+  await Firebase.initializeApp();
+  FirebaseMessaging.onBackgroundMessage(_fcmMessageHandler);
 
   runApp(const MyApp());
 }
-//
-// Future<void> _fcmMessageHandler(RemoteMessage message) async {
-//   print('[John] FCM background:  ${message.notification!.body}');
-// }
+
+Future<void> _fcmMessageHandler(RemoteMessage message) async {
+  print('[John] FCM background:  ${message.notification!.body}');
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -41,7 +40,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
-  // late FirebaseMessaging messaging;
+  late FirebaseMessaging messaging;
 
   String? token;
   String? tecentToken;
@@ -49,43 +48,43 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    // initFirebase();
+    initFirebase();
     initTecentPlatformState();
   }
 
   Future<void> initFirebase() async {
-    // messaging = FirebaseMessaging.instance;
+    messaging = FirebaseMessaging.instance;
 
-    // messaging.getToken().then((value) {
-    //   setState(() {
-    //     token = value;
-    //     textEditingController.text = token!;
-    //   });
-    //
-    //   print('[John] FCM token $value');
-    // });
+    messaging.getToken().then((value) {
+      setState(() {
+        token = value;
+        textEditingController.text = token!;
+      });
 
-    // FirebaseMessaging.onMessage.listen((RemoteMessage event) {
-    //   print("[John] FCM message recieved");
-    // });
-    // FirebaseMessaging.onMessageOpenedApp.listen((message) {
-    //   print('[John] FCM Message clicked!');
-    // });
-    //
-    // FirebaseMessaging.onMessageOpenedApp.listen((event) {
-    //   print('[John] FCM Opened App!');
-    // });
+      print('[John] FCM token $value');
+    });
+
+    FirebaseMessaging.onMessage.listen((RemoteMessage event) {
+      print("[John] FCM message recieved");
+    });
+    FirebaseMessaging.onMessageOpenedApp.listen((message) {
+      print('[John] FCM Message clicked!');
+    });
+
+    FirebaseMessaging.onMessageOpenedApp.listen((event) {
+      print('[John] FCM Opened App!');
+    });
   }
 
-  final XgFlutterPlugin tpush = XgFlutterPlugin();
+  // final XgFlutterPlugin tpush = XgFlutterPlugin();
 
   Future<void> initTecentPlatformState() async {
     /// 开启DEBUG
-    tpush.setEnableDebug(true);
-    tpush.configureClusterDomainName("tpns.sgp.tencent.com");
-    tpush.startXg("1520011026", "APMPAT8PELL9");
-    XgFlutterPlugin.xgApi.enableOtherPush();
-    XgFlutterPlugin.xgApi.regPush();
+    // tpush.setEnableDebug(true);
+    // tpush.configureClusterDomainName("tpns.sgp.tencent.com");
+    // tpush.startXg("1520011026", "APMPAT8PELL9");
+    // XgFlutterPlugin.xgApi.enableOtherPush();
+    // XgFlutterPlugin.xgApi.regPush();
   }
 
   TextEditingController textEditingController = TextEditingController();
@@ -108,9 +107,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 'FCM: $token',
               ),
             ),
-            // TextField(
-            //   controller: textEditingController,
-            // ),
+            TextField(
+              controller: textEditingController,
+            ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
@@ -125,8 +124,10 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          tecentToken = await XgFlutterPlugin.xgApi.getXgToken();
-          textEditingController2.text = tecentToken ?? '';
+          FirebaseMessaging.instance.requestPermission();
+
+          // tecentToken = await XgFlutterPlugin.xgApi.getXgToken();
+          // textEditingController2.text = tecentToken ?? '';
         },
         tooltip: 'Increment',
         child: const Icon(Icons.add),
